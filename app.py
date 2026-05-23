@@ -16,16 +16,24 @@ st.markdown(f"""
     h1, h2, h3, h4, h5, h6 {{
         color: #464646 !important;
     }}
-    /* FORCE THE MOBILE SIDEBAR HAMBURGER ICON TO BE #2596be */
-    button[data-testid="stSidebarCollapseButton"] {{
-        color: #2596be !important;
+   /* NEW ULTRA-FORCED MOBILE SIDEBAR ICON COLOR FIX */
+    .stApp header, [data-testid="stHeader"] {{
         background-color: transparent !important;
     }}
     
-    /* Ensure the icon inside the button matches the color */
+    /* Target any menu/sidebar button icon at the top corner */
+    button[class*="st-emotion-cache"] svg, 
+    button[class*="StyledSidebarCollapseButton"] svg,
     button[data-testid="stSidebarCollapseButton"] svg {{
         fill: #2596be !important;
         color: #2596be !important;
+        stroke: #2596be !important;
+    }}
+    
+    button[class*="st-emotion-cache"]:hover svg,
+    button[class*="StyledSidebarCollapseButton"]:hover svg {{
+        fill: #ebd4c3 !important;
+        color: #ebd4c3 !important;
     }}
     
     /* Title Styles */
