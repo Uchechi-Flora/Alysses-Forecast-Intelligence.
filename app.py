@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 # 1. Page Configuration & Luxury Theme Styling
 st.set_page_config(page_title="Alysses Forecast Intelligence", page_icon="✨", layout="wide")
 
-# Applying color palette: Muted Gold, Soft Cream, Sage Green, Charcoal
+# Applying advanced mobile-responsive design patches
 st.markdown(f"""
     <style>
     .stApp {{ background-color: #fdfbfc; }}
@@ -15,6 +15,13 @@ st.markdown(f"""
     /* Title Styles */
     .main-title {{ font-size: 5.2rem; font-weight: 800; color: #464646; text-align: center; margin-top: 8%; }}
     .sub-title {{ font-size: 1.2rem; color: #b29176; text-align: center; margin-bottom: 2rem; }}
+    
+    /* CRITICAL MOBILE FIX: Force option labels to be completely visible */
+    div[data-testid="stRadio"] label p {{
+        color: #464646 !important;
+        font-weight: 500 !important;
+        font-size: 1rem !important;
+    }}
     
     /* Sidebar Styling */
     [data-testid="stSidebar"] {{ background-color: #464646; }}
@@ -65,20 +72,16 @@ def change_page(page_name):
 
 # --- PAGE 1: HOMEPAGE LANDING ---
 if st.session_state.page == 'home':
-    st.markdown('<h1 style="font-size: 70px; font-weight: 800; color: #464646; text-align: center; margin-top: 5%;">Alysses Forecast Intelligence</h1>', unsafe_allow_html=True)
-    #st.markdown('<p class="main-title">Alysses Forecast Intelligence</p>', unsafe_allow_html=True)
-    st.write("<p style='color:#b29176; text-align:center; font-size:1.3rem; margin-bottom:2rem;'>Predictive business analytics for product performance, inventory, and operational risk.</p>", unsafe_allow_html=True)
-    #st.markdown('<p class="sub-title">Predictive business analytics for product performance, inventory, and operational risk.</p>', unsafe_allow_html=False)
+    st.markdown('<h1 style="font-size: 50px; font-weight: 800; color: #464646; text-align: center; margin-top: 5%;">Alysses Forecast Intelligence</h1>', unsafe_allow_html=True)
+    st.write("<p style='color:#b29176; text-align:center; font-size:1.3rem; margin-bottom:2rem; padding: 0 15px;'>Predictive business analytics for product performance, inventory, and operational risk.</p>", unsafe_allow_html=True)
     
     st.write("")
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        # The button color is now forced to your Muted Gold (#b29176) instead of red
         if st.button("Explore Forecasts →", use_container_width=True):
             change_page('dashboard')
             st.rerun()
             
-    # The footnote footer is strictly locked to this homepage
     st.markdown('<div class="home-footer">Built by Nwokocha Uchechi Flora © 2026. All rights reserved.</div>', unsafe_allow_html=True)
 
 # --- PAGE 2: MAIN DASHBOARD ---
@@ -91,40 +94,38 @@ elif st.session_state.page == 'dashboard':
     st.markdown("## Product Performance & Prediction Dashboard")
     st.markdown("---")
     
-    # SIDEBAR CONTROLS (Colors match your charcoal and cream options)
+    # SIDEBAR CONTROLS
     st.sidebar.markdown("<h3 style='color:#ebd4c3;'>Controls</h3>", unsafe_allow_html=True)
     selected_product = st.sidebar.selectbox("Choose a Product", sorted(df['Product_Name'].unique()))
     selected_region = st.sidebar.selectbox("Choose a Region", sorted(df['Customer_Region'].unique()))
     selected_quarter = st.sidebar.selectbox("Choose a Quarter", ["Q1 2026", "Q2 2026", "Q3 2026", "Q4 2026"])
     
+    # Adaptive layout allocation for side-by-side screens and mobile stacks
     left_panel, right_panel = st.columns([2, 1])
     
     with left_panel:
-        # I) INTERACTIVE PRODUCT PERFORMANCE FORECAST (WITH HOVER TOOLTIPS)
         st.markdown(f"### Future Demand Forecast for {selected_product}")
+        
+        # Responsive CSS wrapper around radio selectors
         granularity = st.radio("View Sales Trend by:", ("Across the Whole Country", "Just for the Selected Region"), horizontal=True)
         
-        # Timeline dates for 2025 and 2026
         months_2025 = pd.date_range(start="2025-01-01", end="2025-12-31", freq="ME")
         months_2026 = pd.date_range(start="2026-01-01", end="2026-06-30", freq="ME")
         
         if "Whole Country" in granularity:
             historical_trend = df[df['Product_Name'] == selected_product].groupby('Month')['Units_Sold'].sum().reindex(range(1, 13), fill_value=0).values
-            # Re-seed random generation for exact consistency per product name length
             np.random.seed(len(selected_product))
             forecast_trend = [int(np.mean(historical_trend[-3:]) * (1 + np.random.uniform(-0.05, 0.10))) for _ in range(6)]
-            chart_title = f"Monthly Units Sold: {selected_product} (All Regions Combined)"
+            chart_title = f"Monthly Units Sold: {selected_product}<br><sub>(All Regions Combined)</sub>"
         else:
             regional_slice = demand_matrix[(demand_matrix['Product_Name'] == selected_product) & (demand_matrix['Customer_Region'] == selected_region)]
             historical_trend = regional_slice.groupby('Month')['Units_Sold'].sum().reindex(range(1, 13), fill_value=0).values
             np.random.seed(len(selected_product) + len(selected_region))
             forecast_trend = [int(np.mean(historical_trend[-2:]) * (1 + np.random.uniform(-0.05, 0.08))) if len(regional_slice) > 0 else np.random.randint(10, 25) for _ in range(6)]
-            chart_title = f"Monthly Units Sold: {selected_product} in {selected_region}"
+            chart_title = f"Monthly Units Sold: {selected_product}<br><sub>(In {selected_region} Region)</sub>"
             
-        # Create an interactive Plotly Chart with tooltips
         fig = go.Figure()
         
-        # 2025 Actuals Line (Charcoal)
         fig.add_trace(go.Scatter(
             x=months_2025, y=historical_trend,
             mode='lines+markers', name='2025 Actual Sales',
@@ -132,7 +133,6 @@ elif st.session_state.page == 'dashboard':
             hovertemplate='Date: %{x|%B %Y}<br>Units Sold: %{y}<extra></extra>'
         ))
         
-        # 2026 Forecast Line (Muted Gold)
         fig.add_trace(go.Scatter(
             x=months_2026, y=forecast_trend,
             mode='lines+markers', name='2026 Prediction',
@@ -140,19 +140,20 @@ elif st.session_state.page == 'dashboard':
             hovertemplate='Date: %{x|%B %Y}<br>Predicted Units: %{y}<extra></extra>'
         ))
         
+        # Added extra top-margin spacing to prevent overlaps with native toolbar tools
         fig.update_layout(
-            title=dict(text=chart_title, font=dict(color='#464646', size=16)),
+            title=dict(text=chart_title, font=dict(color='#464646', size=15), y=0.91),
             hovermode="x unified",
             paper_bgcolor='#fdfbfc', plot_bgcolor='#fdfbfc',
-            margin=dict(l=40, r=40, t=40, b=40), height=350
+            margin=dict(l=20, r=20, t=95, b=40), height=380,
+            legend=dict(orientation="h", yanchor="bottom", y=-0.35, xanchor="left", x=0)
         )
         fig.update_xaxes(showgrid=True, gridcolor='#ebd4c3')
         fig.update_yaxes(showgrid=True, gridcolor='#ebd4c3', title="Units Sold")
         
         st.plotly_chart(fig, use_container_width=True)
         
-        # III)QUARTERLY INVENTORY TURNOVER TABLE 
-        # (Stays completely steady showing all rows at once)
+        # III) QUARTERLY INVENTORY TURNOVER TABLE
         st.markdown("### 2026 Quarterly Inventory Turnover Forecast")
         st.write("This table shows how fast stock is expected to move for every product across each quarter and all regions combined.")
         
@@ -161,7 +162,6 @@ elif st.session_state.page == 'dashboard':
             prod_slice = df[df['Product_Name'] == prod]
             base_ratio = (prod_slice['Units_Sold'].sum() / prod_slice['Inventory_Stock_Level_after transaction'].mean()) / 4
             
-            # Using a static seed per product index so the numbers stay locked and permanently stable
             np.random.seed(index)
             fixed_turnover_list.append({
                 "Product Name": prod,
@@ -195,7 +195,6 @@ elif st.session_state.page == 'dashboard':
         risk_sorted_df = pd.DataFrame(risk_matrix).sort_values(by="Probability", ascending=False)
         current_product_risk = risk_sorted_df[risk_sorted_df["Product"] == selected_product].iloc[0]
         
-        # Displaying the risk score inside a clean, brand-colored container box
         st.markdown(f"""
             <div class='metric-box'>
                 <p style='margin:0; font-size:0.95rem; color:#464646; font-weight:bold;'>{selected_product} Risk Score</p>
@@ -204,10 +203,10 @@ elif st.session_state.page == 'dashboard':
             </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("**Top 3 Products at the Risk of Discontinuation:**")
-        st.table(risk_sorted_df.head(3)[["Product", "Status"]].set_index("Product"))
+        st.markdown("**Top 3 Products at Risk:**")
+        st.dataframe(risk_sorted_df.head(3)[["Product", "Status"]].set_index("Product"), use_container_width=True)
         
-        # IV) BUSINESS INTERPRETATION (SIMPLIFIED WORDS)
+        # IV) BUSINESS INTERPRETATION
         st.markdown("### Business Advice")
         
         prob_val = current_product_risk["Probability"]
