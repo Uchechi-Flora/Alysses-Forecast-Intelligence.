@@ -142,10 +142,10 @@ elif st.session_state.page == 'dashboard':
         
         # Added extra top-margin spacing to prevent overlaps with native toolbar tools
         fig.update_layout(
-            title=dict(text=chart_title, font=dict(color='#464646', size=15), y=0.95),
+            title=dict(text=chart_title, font=dict(color='#464646', size=15), y=0.91),
             hovermode="x unified",
             paper_bgcolor='#fdfbfc', plot_bgcolor='#fdfbfc',
-            margin=dict(l=20, r=20, t=105, b=40), height=380,
+            margin=dict(l=20, r=20, t=95, b=40), height=380,
             legend=dict(orientation="h", yanchor="bottom", y=-0.4, xanchor="center", x=0.5, font=dict(size=11, color='#464646')
         ))
         fig.update_xaxes(showgrid=True, gridcolor='#87AE73', tickfont=dict(color='#873e23'))
