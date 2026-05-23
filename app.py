@@ -146,10 +146,10 @@ elif st.session_state.page == 'dashboard':
             hovermode="x unified",
             paper_bgcolor='#fdfbfc', plot_bgcolor='#fdfbfc',
             margin=dict(l=20, r=20, t=95, b=40), height=380,
-            legend=dict(orientation="h", yanchor="bottom", y=-0.35, xanchor="left", x=0)
+            legend=dict(orientation="h", yanchor="bottom", y=-0.4, xanchor="center", x=0.5, font=dict(size=11, color='#464646')
         )
-        fig.update_xaxes(showgrid=True, gridcolor='#ebd4c3')
-        fig.update_yaxes(showgrid=True, gridcolor='#ebd4c3', title="Units Sold")
+        fig.update_xaxes(showgrid=True, gridcolor='#87AE73')
+        fig.update_yaxes(showgrid=True, gridcolor='#87ae73', title="Units Sold")
         
         st.plotly_chart(fig, use_container_width=True)
         
