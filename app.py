@@ -112,7 +112,7 @@ elif st.session_state.page == 'dashboard':
     st.markdown("---")
     
     # SIDEBAR CONTROLS
-    st.sidebar.markdown("<h3 style='color:#ebd4c3;'>Controls</h3>", unsafe_allow_html=True)
+    st.sidebar.markdown("<h3 style='color:#2596be;'>Controls</h3>", unsafe_allow_html=True)
     selected_product = st.sidebar.selectbox("Choose a Product", sorted(df['Product_Name'].unique()))
     selected_region = st.sidebar.selectbox("Choose a Region", sorted(df['Customer_Region'].unique()))
     selected_quarter = st.sidebar.selectbox("Choose a Quarter", ["Q1 2026", "Q2 2026", "Q3 2026", "Q4 2026"])
