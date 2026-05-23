@@ -16,24 +16,17 @@ st.markdown(f"""
     h1, h2, h3, h4, h5, h6 {{
         color: #464646 !important;
     }}
-   /* NEW ULTRA-FORCED MOBILE SIDEBAR ICON COLOR FIX */
-    .stApp header, [data-testid="stHeader"] {{
-        background-color: transparent !important;
-    }}
-    
-    /* Target any menu/sidebar button icon at the top corner */
-    button[class*="st-emotion-cache"] svg, 
-    button[class*="StyledSidebarCollapseButton"] svg,
-    button[data-testid="stSidebarCollapseButton"] svg {{
+   /* TARGET ONLY THE SIDEBAR OPEN/CLOSE BUTTON ARROW */
+    [data-testid="stSidebarCollapseButton"] svg {{
         fill: #2596be !important;
         color: #2596be !important;
-        stroke: #2596be !important;
     }}
     
-    button[class*="st-emotion-cache"]:hover svg,
-    button[class*="StyledSidebarCollapseButton"]:hover svg {{
-        fill: #ebd4c3 !important;
-        color: #ebd4c3 !important;
+    /* LEAVE THREE DOTS ALONE: Ensure the right-side main menu icon stays visible */
+    [data-testid="stHeader"] [id="MainMenu"] svg,
+    button[aria-label="Overview"] svg {{
+        fill: inherit !important;
+        color: inherit !important;
     }}
     
     /* Title Styles */
