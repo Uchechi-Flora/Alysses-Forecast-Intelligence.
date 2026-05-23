@@ -16,6 +16,17 @@ st.markdown(f"""
     h1, h2, h3, h4, h5, h6 {{
         color: #464646 !important;
     }}
+    /* FORCE THE MOBILE SIDEBAR HAMBURGER ICON TO BE #2596be */
+    button[data-testid="stSidebarCollapseButton"] {{
+        color: #2596be !important;
+        background-color: transparent !important;
+    }}
+    
+    /* Ensure the icon inside the button matches the color */
+    button[data-testid="stSidebarCollapseButton"] svg {{
+        fill: #2596be !important;
+        color: #2596be !important;
+    }}
     
     /* Title Styles */
     .main-title {{ font-size: 5.2rem; font-weight: 800; color: #464646; text-align: center; margin-top: 8%; }}
@@ -159,8 +170,15 @@ elif st.session_state.page == 'dashboard':
         st.plotly_chart(fig, use_container_width=True)
         
         # III) QUARTERLY INVENTORY TURNOVER TABLE
-        st.markdown("### 2026 Quarterly Inventory Turnover Forecast")
-        st.write("This table shows how fast stock is expected to move for every product across each quarter and all regions combined.")
+        # III) QUARTERLY INVENTORY TURNOVER TABLE
+        st.markdown("""
+            ### 2026 Quarterly Inventory Turnover Forecast
+            <p style='margin-top: -10px; margin-bottom: 5px; color: #464646; font-size: 0.9rem;'>
+            This table shows how fast stock is expected to move for every product across each quarter and all regions combined.
+            </p>
+        """, unsafe_allow_html=True)
+       # st.markdown("### 2026 Quarterly Inventory Turnover Forecast")
+       # st.write("This table shows how fast stock is expected to move for every product across each quarter and all regions combined.")
         
         fixed_turnover_list = []
         for index, prod in enumerate(sorted(df['Product_Name'].unique())):
@@ -208,7 +226,7 @@ elif st.session_state.page == 'dashboard':
             </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("**Top 3 Products at Risk:**")
+        st.markdown("<p style='color: #464646; font-weight: bold; margin-bottom: 5px;'>Top 3 Products at Risk:</p>", unsafe_allow_html=True)
         st.dataframe(risk_sorted_df.head(3)[["Product", "Status"]].set_index("Product"), use_container_width=True)
         
         # IV) BUSINESS INTERPRETATION
