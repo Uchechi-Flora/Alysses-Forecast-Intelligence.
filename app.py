@@ -13,9 +13,9 @@ st.markdown(f"""
     .stApp {{ background-color: #fdfbfc; }}
     
     /* FORCE ALL TITLES TO BE CHARCOAL GREY mobile layout */
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6 {{
         color: #464646 !important;
-    }
+    }}
     
     /* Title Styles */
     .main-title {{ font-size: 5.2rem; font-weight: 800; color: #464646; text-align: center; margin-top: 8%; }}
